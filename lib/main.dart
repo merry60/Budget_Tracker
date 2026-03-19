@@ -12,10 +12,8 @@ import 'utils/constants.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Notifications
   await NotificationHelper.initialize();
 
-  // Initialize Hive
   await Hive.initFlutter();
   Hive.registerAdapter(ExpenseAdapter());
   await Hive.openBox<Expense>('expenses');
@@ -47,8 +45,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primaryColor: kPrimaryColor,
             scaffoldBackgroundColor: const Color(0xFFF8F9FA),
-            fontFamily:
-                'Roboto', // Or standard system font, just setting it explicitly
+            fontFamily: 'Roboto',
             appBarTheme: const AppBarTheme(
               backgroundColor: kPrimaryColor,
               foregroundColor: Colors.white,

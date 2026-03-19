@@ -11,7 +11,6 @@ class ExpenseProvider with ChangeNotifier {
   double monthlyBudget = 0.0;
   bool isDarkMode = false;
 
-  // Getters
   List<Expense> get expenses => _expenses;
 
   double get totalSpentThisMonth {
@@ -35,7 +34,6 @@ class ExpenseProvider with ChangeNotifier {
   }
 
   Map<String, double> get expensesByMonth {
-    // Return last 6 months spending
     Map<String, double> data = {};
     final now = DateTime.now();
     for (int i = 5; i >= 0; i--) {
@@ -72,7 +70,6 @@ class ExpenseProvider with ChangeNotifier {
     return months[month - 1];
   }
 
-  // Load data from Hive and SharedPreferences
   Future<void> loadData() async {
     final prefs = await SharedPreferences.getInstance();
     monthlyBudget = prefs.getDouble(kBudgetKey) ?? 0.0;
@@ -87,7 +84,6 @@ class ExpenseProvider with ChangeNotifier {
       final box = Hive.box<Expense>('expenses');
       _expenses = box.values.toList();
 
-      // Sort youngest first
       _expenses.sort((a, b) => b.date.compareTo(a.date));
     } catch (e) {
       print("Error loading Hive data: $e");
@@ -96,7 +92,6 @@ class ExpenseProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Add expense
   Future<void> addExpense(Expense e) async {
     final box = Hive.box<Expense>('expenses');
     await box.add(e);
@@ -105,7 +100,6 @@ class ExpenseProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Update expense
   Future<void> updateExpense(Expense oldExpense, Expense newExpense) async {
     final box = Hive.box<Expense>('expenses');
     await box.put(oldExpense.key, newExpense);
@@ -119,15 +113,13 @@ class ExpenseProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Delete expense
   Future<void> deleteExpense(String id) async {
     final expenseToRemove = _expenses.firstWhere((e) => e.id == id);
-    await expenseToRemove.delete(); // HiveObject makes this easy
+    await expenseToRemove.delete();
     _expenses.removeWhere((e) => e.id == id);
     notifyListeners();
   }
 
-  // Set budget
   Future<void> setBudget(double amount) async {
     monthlyBudget = amount;
     final prefs = await SharedPreferences.getInstance();
@@ -135,7 +127,6 @@ class ExpenseProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Toggle dark mode
   Future<void> toggleDarkMode() async {
     isDarkMode = !isDarkMode;
     final prefs = await SharedPreferences.getInstance();
@@ -143,7 +134,6 @@ class ExpenseProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Add Custom Category
   Future<void> addCustomCategory(String name, String emoji) async {
     final newCat = {'name': name, 'emoji': emoji};
     customCategories.add(newCat);
