@@ -31,4 +31,4 @@ Flutter so this was a good project to build.
 - Basic app architecture with screens, models and providers
 
 
-Muhammad Umair — CS Final Year Student, Lahore Garrison University
+Muhammad Umair — CS Student, Lahore Garrison University
